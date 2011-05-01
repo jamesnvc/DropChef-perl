@@ -1,8 +1,10 @@
 package App::Dropchef;
 
-use 5.006;
+use v5.12;
 use strict;
 use warnings;
+
+use App::Dropchef::Sync qw(watch);
 
 =head1 NAME
 
@@ -16,37 +18,26 @@ Version 0.01
 
 our $VERSION = '0.01';
 
-
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+This module implements a Dropbox-based baked blogging engine.
 
-Perhaps a little code snippet.
+=cut
 
-    use App::Dropchef;
-
-    my $foo = App::Dropchef->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+use Exporter::Easy (
+  OK => [ qw(main) ]
+);
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
+=head2 main
+
+The main entry point of the program: Load conifg, start watching directories,
+begin baking.
 
 =cut
 
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
+sub main {
 }
 
 =head1 AUTHOR
