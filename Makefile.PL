@@ -1,4 +1,4 @@
-use 5.006;
+use v5.12;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
@@ -14,6 +14,9 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
+        'Exporter::Easy' => 0,
+        'Forks::Super' => 0,
+        'File::ChangeNotify' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'App-Dropchef-*' },
