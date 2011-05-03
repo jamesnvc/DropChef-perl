@@ -3,8 +3,10 @@ package App::Dropchef;
 use v5.12;
 use strict;
 use warnings;
+use Carp;
 
 use App::Dropchef::Sync qw(watch);
+use Forks::Super qw(fork);
 
 =head1 NAME
 
@@ -38,7 +40,34 @@ begin baking.
 =cut
 
 sub main {
+  my ($site_dir) = @_;
+  my $queue_dir = join "/", $site_dir, '_posts', 'Queue';
+  my $watch_job = fork {
+    sub => \&watch,
+    args => [ $queue_dir, \&handle_new_file ],
+  };
+  croak 'Failed to fork watcher process!' if !defined $watch_job;
+  $SIG{USR2} = sub {
+    say 'Quitting...';
+    $watch_job->kill('USR2');
+  };
+  $watch_job->wait();
+  return;
 }
+
+=head2 handle_new_file
+
+Callback to be invoked when a new file is placed in the Queue directory.
+
+=cut
+
+sub handle_new_file {
+  my ($file) = @_;
+  say "File $file added!";
+  unlink $file or carp "Couldn't delete file $file";
+  return;
+}
+
 
 =head1 AUTHOR
 
