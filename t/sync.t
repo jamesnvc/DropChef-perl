@@ -28,5 +28,6 @@ foreach my $f (qw(foo bar baz quux)) {
   touch($path_name);
 }
 $watch_job->kill('USR2');
+my @watcher_saw = split '\n', $events;
 
-ok $events, 'Number of reported events = number sent events';
+ok $#touched == $#watcher_saw, 'Number of reported events = number sent events';
